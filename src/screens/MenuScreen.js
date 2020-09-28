@@ -33,7 +33,7 @@ class MenuScreen extends Component {
         <FlatList
           data={MENU}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => `${item.id}`}
         />
       </View>
     );
