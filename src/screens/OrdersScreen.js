@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Platform, Image, Text, View} from 'react-native';
 
-export class MenuScreen extends Component {
+class OrdersScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -13,7 +13,7 @@ export class MenuScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{fontSize: 25}}>Orders</Text>
+        <Text style={{fontSize: 36}}>Orders</Text>
       </View>
     );
   }
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MenuScreen;
+export default OrdersScreen;

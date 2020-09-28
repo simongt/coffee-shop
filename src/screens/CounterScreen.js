@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Platform, Image, Text, View} from 'react-native';
 
-export class CounterScreen extends Component {
+class CounterScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -13,7 +13,7 @@ export class CounterScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{fontSize: 25}}>Counter</Text>
+        <Text style={{fontSize: 36}}>Counter</Text>
       </View>
     );
   }

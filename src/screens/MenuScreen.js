@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {StyleSheet, Platform, Image, Text, View} from 'react-native';
 
-export class MenuScreen extends Component {
+import MENU from '../constants';
+
+class MenuScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -13,7 +15,8 @@ export class MenuScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{fontSize: 25}}>Menu</Text>
+        <Text style={{fontSize: 36}}>Menu</Text>
+        <View style={styles.menuItem}></View>
       </View>
     );
   }
