@@ -1,18 +1,16 @@
-import {v4 as uuidv4} from 'uuid';
-
 export const MENU = [
   {
-    id: uuidv4(),
+    id: 1,
     name: `Café au lait`,
     duration: 4,
   },
   {
-    id: uuidv4(),
+    id: 2,
     name: 'Cappuccino',
     duration: 10,
   },
   {
-    id: uuidv4(),
+    id: 3,
     name: 'Espresso',
     duration: 15,
   },
