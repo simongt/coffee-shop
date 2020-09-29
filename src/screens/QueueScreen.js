@@ -1,4 +1,4 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   Platform,
@@ -7,6 +7,7 @@ import {
   View,
   FlatList,
   ActivityIndicator,
+  Animated,
 } from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
@@ -20,9 +21,13 @@ import {
   LONG_TOAST,
 } from '../constants';
 import {Colors} from '../styles/Colors';
+import {useInterval} from '../utils';
 
 const QueueScreen = (props) => {
   const [loading, setLoading] = useState(true);
+  const [order, setOrder] = useState(null);
+  const [progress, setProgress] = useState(1);
+  // const prepTime = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (
@@ -33,20 +38,42 @@ const QueueScreen = (props) => {
     }
   }, [loading]);
 
-  onMenuItemPress = async (item) => {
+  useEffect(() => {
+    if (props.ordersQueued.length > 0) {
+      setOrder(props.ordersQueued[0]);
+    }
+  }, [order]);
+
+  onMenuItemPress = (item) => {
     try {
       Toast.show(`Order for ${item.name} is ready.`, SHORT_TOAST);
-      await props.setOrdersQueued(
+      props.setOrdersQueued(
         props.ordersQueued.filter((order) => order.id !== item.id),
       );
-      await props.setOrdersPrepped([...props.ordersPrepped, item]);
+      props.setOrdersPrepped([...props.ordersPrepped, item]);
+      if (props.ordersQueued.length > 0) {
+        setOrder(props.ordersQueued[0]);
+        setProgress(0);
+      }
     } catch (error) {
       Toast.show(`Could not place order for ${item.name}.`, LONG_TOAST);
     }
   };
 
+  useInterval(() => {
+    if (progress < 100 && order !== null) {
+      setProgress(progress + 10 / order.duration);
+    }
+  }, 50);
+
   renderItem = ({item}) => (
-    <MenuItem item={item} onPress={() => this.onMenuItemPress(item)} />
+    <MenuItem
+      item={item}
+      onPress={() => this.onMenuItemPress(item)}
+      prepping={item.id === order.id}
+      ready={progress >= 100}
+      progress={progress / 100}
+    />
   );
 
   return loading ? (
@@ -83,22 +110,32 @@ const QueueScreen = (props) => {
   );
 };
 
-const MenuItem = ({item, onPress}) => {
+const MenuItem = ({item, onPress, prepping, ready, progress}) => {
+  if (ready) {
+    onPress();
+  }
   return (
     <TouchableOpacity onPress={onPress} style={styles.menuItem}>
       <LinearGradient
         colors={[Colors.secondaryDark, Colors.gunmetal]}
         style={styles.menuItemGradient}>
         <Text style={styles.menuItemText}>{item.name}</Text>
-        <Progress.Bar
-          useNativeDriver={true}
-          animationType={'decay'}
-          color={Colors.secondary}
-          indeterminate={true}
-          indeterminateAnimationDuration={item.duration * 1000}
-          width={WINDOW_WIDTH * 0.75}
-          // animationConfig={{bounciness: 0.5}}
-        />
+        <View style={{position: 'absolute', bottom: 0, left: 0}}>
+          {prepping && (
+            <Progress.Bar
+              progress={progress}
+              useNativeDriver={true}
+              // animationType={'decay'}
+              color={Colors.secondary}
+              // indeterminate={prepping}
+              // indeterminateAnimationDuration={item.duration * 1000}
+              width={WINDOW_WIDTH - 30}
+              // height={35}
+              borderRadius={0}
+              borderColor={'transparent'}
+            />
+          )}
+        </View>
         <View
           style={{
             padding: 5,
