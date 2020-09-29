@@ -1,22 +1,23 @@
 import {Dimensions} from 'react-native';
 import {Colors} from '../styles/Colors';
+import {v4 as uuidv4} from 'uuid';
 
 export const WINDOW_WIDTH = Dimensions.get('window').width;
 export const WINDOW_HEIGHT = Dimensions.get('window').height;
 
 export const MENU = [
   {
-    id: 1,
+    id: uuidv4(),
     name: `café au lait`,
     duration: 4,
   },
   {
-    id: 2,
+    id: uuidv4(),
     name: 'cappuccino',
     duration: 10,
   },
   {
-    id: 3,
+    id: uuidv4(),
     name: 'espresso',
     duration: 15,
   },
