@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Platform,
@@ -20,29 +20,23 @@ import {
 } from '../constants';
 import {Colors} from '../styles/Colors';
 
-class PickupScreen extends Component {
-  constructor(props) {
-    super();
+const PickupScreen = (props) => {
+  const [loading, setLoading] = useState(true);
 
-    this.state = {
-      loading: true,
-    };
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     if (
-      Array.isArray(this.props.ordersQueued) &&
-      Array.isArray(this.props.ordersPrepped)
+      Array.isArray(props.ordersQueued) &&
+      Array.isArray(props.ordersPrepped)
     ) {
-      this.setState({loading: false});
+      setLoading(false);
     }
-  }
+  }, [loading]);
 
   onMenuItemPress = async (item) => {
     try {
       Toast.show(`Order picked up for ${item.name}.`, SHORT_TOAST);
-      await this.props.setOrdersPrepped(
-        this.props.ordersPrepped.filter((order) => order.id !== item.id),
+      await props.setOrdersPrepped(
+        props.ordersPrepped.filter((order) => order.id !== item.id),
       );
     } catch (error) {
       Toast.show(`Could not pick up order for ${item.name}.`, LONG_TOAST);
@@ -53,44 +47,44 @@ class PickupScreen extends Component {
     <MenuItem item={item} onPress={() => this.onMenuItemPress(item)} />
   );
 
-  render() {
-    return this.state.loading ? (
-      <View style={{flex: 1, justifyContent: 'center'}}>
-        <ActivityIndicator size="large" color={Colors.puce} />
-      </View>
-    ) : (
-      <View style={styles.container}>
-        <LinearGradient
-          colors={[Colors.primaryDark, '#2D2A43', Colors.primaryDark]}>
-          <FlatList
-            data={this.props.ordersPrepped}
-            renderItem={this.renderItem}
-            keyExtractor={(item) => `${item.id}`}
-            ListHeaderComponent={
-              <Text style={styles.screenHeaderText}>pickup counter</Text>
-            }
-            ListEmptyComponent={
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  width: WINDOW_WIDTH,
-                  paddingHorizontal: 15,
-                }}>
-                <Text style={styles.menuItemText}>
-                  There are no orders to pick up at the moment.
-                </Text>
-              </View>
-            }
-          />
-        </LinearGradient>
-      </View>
-    );
-  }
-}
+  return loading ? (
+    <View style={{flex: 1, justifyContent: 'center'}}>
+      <ActivityIndicator size="large" color={Colors.puce} />
+    </View>
+  ) : (
+    <View style={styles.container}>
+      <LinearGradient
+        colors={[Colors.primaryDark, '#2D2A43', Colors.primaryDark]}>
+        <FlatList
+          data={props.ordersPrepped}
+          renderItem={this.renderItem}
+          keyExtractor={(item) => `${item.id}`}
+          ListHeaderComponent={
+            <Text style={styles.screenHeaderText}>pickup counter</Text>
+          }
+          ListEmptyComponent={
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                width: WINDOW_WIDTH,
+                paddingHorizontal: 15,
+              }}>
+              <Text style={styles.menuItemText}>
+                There are no orders to pick up at the moment.
+              </Text>
+            </View>
+          }
+        />
+      </LinearGradient>
+    </View>
+  );
+};
 
 const MenuItem = ({item, onPress}) => (
-  <TouchableOpacity onPress={onPress} style={styles.menuItem}>
+  <TouchableOpacity
+    onPress={onPress}
+    style={[styles.menuItem, {color: Colors.champagnePink}]}>
     <LinearGradient
       colors={[Colors.roseDust, Colors.eggplant]}
       style={styles.menuItemGradient}>
@@ -133,7 +127,7 @@ const styles = StyleSheet.create({
   },
   menuItemText: {
     fontSize: 24,
-    color: Colors.champagnePink,
+    color: Colors.peachPuff,
   },
   screenHeaderText: {
     color: Colors.newYorkPink,
