@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MenuScreen from '../screens/MenuScreen';
-import OrdersScreen from '../screens/OrdersScreen';
-import CounterScreen from '../screens/CounterScreen';
+import OrdersScreen from '../screens/QueueScreen';
+import CounterScreen from '../screens/PickupScreen';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {Colors} from '../styles';
+import {Colors} from '../styles/Colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,20 +15,20 @@ const MainTabs = (props) => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: Colors.tiffanyBlue,
-        inactiveTintColor: Colors.davysGrey,
+        activeTintColor: Colors.orangeYellow,
+        inactiveTintColor: Colors.secondaryLight,
       }}>
       <Tab.Screen
         name="Order"
         component={MenuScreen}
         options={{
-          tabBarLabel: 'Order',
+          tabBarLabel: 'order',
           tabBarIcon: ({focused, color, size}) => (
             <FontAwesome
               name={'coffee'}
               size={26}
               style={{marginBottom: -3}}
-              color={focused ? Colors.tiffanyBlue : Colors.davysGrey}
+              color={focused ? Colors.puce : Colors.secondaryDark}
             />
           ),
         }}
@@ -37,7 +37,7 @@ const MainTabs = (props) => {
         name="Queue"
         component={OrdersScreen}
         options={{
-          tabBarLabel: 'Queue',
+          tabBarLabel: 'queue',
           tabBarBadge:
             ordersQueued.length === 0 ? null : `${ordersQueued.length}`,
           tabBarIcon: ({focused, color, size}) => (
@@ -45,7 +45,7 @@ const MainTabs = (props) => {
               name={'hourglass-half'}
               size={26}
               style={{marginBottom: -3}}
-              color={focused ? Colors.tiffanyBlue : Colors.davysGrey}
+              color={focused ? Colors.puce : Colors.secondaryDark}
             />
           ),
         }}
@@ -54,7 +54,7 @@ const MainTabs = (props) => {
         name="Pickup"
         component={CounterScreen}
         options={{
-          tabBarLabel: 'Pickup',
+          tabBarLabel: 'pickup',
           tabBarBadge:
             ordersPrepped.length === 0 ? null : `${ordersPrepped.length}`,
           tabBarIcon: ({focused, color, size}) => (
@@ -62,7 +62,7 @@ const MainTabs = (props) => {
               name={'check-square'}
               size={26}
               style={{marginBottom: -3}}
-              color={focused ? Colors.tiffanyBlue : Colors.davysGrey}
+              color={focused ? Colors.puce : Colors.secondaryDark}
             />
           ),
         }}

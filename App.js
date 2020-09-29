@@ -13,7 +13,7 @@ import AppNavigator from './src/navigation/AppNavigator';
 const App: () => React$Node = () => {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" />
       <AppNavigator />
     </>
   );

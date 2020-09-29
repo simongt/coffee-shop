@@ -1,26 +1,35 @@
-export const seaSerpent = '#4EC9C7';
-export const tiffanyBlue = '#17B4B7';
-export const skobeloff = '#00696B';
-export const spaceCadet = '#10254C';
-export const oxfordBlue = '#001949';
-export const maastrichtBlue = '#061A40';
-export const independence = '#344C75';
-export const yaleBlue = '#184289';
-export const hanBlue = '#3368C4';
-export const queenBlue = '#4B6AA0';
-export const eerieBlack = '#171C23';
-export const onyx = '#2F3847';
-export const outerSpace = '#3D485B';
-export const davysGrey = '#535657';
-export const stormCloud = '#4F646F';
-export const glitter = '#E2EDFF';
-export const platinum = '#DEE7E7';
-export const lightGray = '#D0D3D9';
-export const lavenderGrey = '#C1BBCC';
-export const wildBlueYonder = '#B7ADCF';
-export const glossyGrape = '#A497C1';
-export const amethyst = '#9566BA';
-export const deepLilac = '#843DBA';
-export const mediumOrchid = '#B351FF';
-export const navyPurple = '#AE44FF';
-export const veronica = '#9D2BF6';
+const colorPalette = {
+  peachPuff: '#FAD1B0',
+  orangeYellow: '#E9C46A',
+  sunray: '#EFB366',
+  sandyBrown: '#F4A261', // info
+  newYorkPink: '#CF7B6C',
+  tuscanRed: '#7E5358',
+  puce: '#CF8DA7',
+  chinaRose: '#AA5377',
+  twilightLavender: '#734568', // primary light
+  spaceCadet: '#3B3759', // primary
+  raisinBlack: '#1E1C2D', // primary dark
+  gunmetal: '#222A37',
+  darkElectricBlue: '#4C6E81', // secondary dark
+  steelTeal: '#638D9A', // secondary
+  cadetBlue: '#7AACB3', // secondary light
+};
+
+// functional aliases for color palette
+export const Colors = {
+  primary: colorPalette.spaceCadet,
+  primaryLight: colorPalette.twilightLavender,
+  primaryDark: colorPalette.raisinBlack,
+  secondary: colorPalette.steelTeal,
+  secondaryLight: colorPalette.cadetBlue,
+  secondaryDark: colorPalette.darkElectricBlue,
+  info: 'blue',
+  warning: 'yellow',
+  error: 'red',
+  success: 'green',
+  lightGrey: 'lightgrey',
+  grey: 'grey',
+  darkGrey: 'darkgrey',
+  ...colorPalette,
+};

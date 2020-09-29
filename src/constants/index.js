@@ -6,17 +6,17 @@ export const WINDOW_HEIGHT = Dimensions.get('window').height;
 export const MENU = [
   {
     id: 1,
-    name: `Café au lait`,
+    name: `café au lait`,
     duration: 4,
   },
   {
     id: 2,
-    name: 'Cappuccino',
+    name: 'cappuccino',
     duration: 10,
   },
   {
     id: 3,
-    name: 'Espresso',
+    name: 'espresso',
     duration: 15,
   },
 ];

@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {MENU, WINDOW_HEIGHT, WINDOW_WIDTH} from '../constants';
 import {Colors} from '../styles/Colors';
 
-class MenuScreen extends Component {
+class PickupScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -27,7 +27,7 @@ class MenuScreen extends Component {
       <View style={styles.container}>
         <LinearGradient
           colors={[Colors.primaryDark, '#2D2A43', Colors.primaryDark]}>
-          <Text style={styles.screenHeaderText}>menu</Text>
+          <Text style={styles.screenHeaderText}>pickup counter</Text>
 
           <FlatList
             data={MENU}
@@ -97,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MenuScreen;
+export default PickupScreen;
