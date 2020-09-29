@@ -3,6 +3,7 @@ import {StyleSheet, Platform, Image, Text, View, FlatList} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-root-toast';
+import {v4 as uuidv4} from 'uuid';
 import {
   MENU,
   WINDOW_HEIGHT,
@@ -14,16 +15,20 @@ import {Colors} from '../styles/Colors';
 
 class MenuScreen extends Component {
   constructor(props) {
-    super(props);
+    super();
 
     this.state = {};
   }
 
   componentDidMount() {}
 
-  onMenuItemPress = (item) => {
+  onMenuItemPress = async (item) => {
     try {
       Toast.show(`Order placed for ${item.name}.`, SHORT_TOAST);
+      await this.props.setOrdersQueued([
+        ...this.props.ordersQueued,
+        {id: uuidv4(), name: item.name, duration: item.duration},
+      ]);
     } catch (error) {
       Toast.show(`Could not place order for ${item.name}.`, LONG_TOAST);
     }
@@ -44,6 +49,17 @@ class MenuScreen extends Component {
             keyExtractor={(item) => `${item.id}`}
             ListHeaderComponent={
               <Text style={styles.screenHeaderText}>order menu</Text>
+            }
+            ListEmptyComponent={
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  width: WINDOW_WIDTH,
+                  paddingHorizontal: 15,
+                }}>
+                <Text style={styles.menuItemText}>N/A</Text>
+              </View>
             }
           />
         </LinearGradient>

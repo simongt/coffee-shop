@@ -1,5 +1,13 @@
 import React, {Component} from 'react';
-import {StyleSheet, Platform, Image, Text, View, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  Platform,
+  Image,
+  Text,
+  View,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-root-toast';
@@ -14,18 +22,30 @@ import {Colors} from '../styles/Colors';
 
 class PickupScreen extends Component {
   constructor(props) {
-    super(props);
+    super();
 
-    this.state = {};
+    this.state = {
+      loading: true,
+    };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    if (
+      Array.isArray(this.props.ordersQueued) &&
+      Array.isArray(this.props.ordersPrepped)
+    ) {
+      this.setState({loading: false});
+    }
+  }
 
-  onMenuItemPress = (item) => {
+  onMenuItemPress = async (item) => {
     try {
-      Toast.show(`Order placed for ${item.name}.`, SHORT_TOAST);
+      Toast.show(`Order picked up for ${item.name}.`, SHORT_TOAST);
+      await this.props.setOrdersPrepped(
+        this.props.ordersPrepped.filter((order) => order.id !== item.id),
+      );
     } catch (error) {
-      Toast.show(`Could not place order for ${item.name}.`, LONG_TOAST);
+      Toast.show(`Could not pick up order for ${item.name}.`, LONG_TOAST);
     }
   };
 
@@ -34,16 +54,33 @@ class PickupScreen extends Component {
   );
 
   render() {
-    return (
+    return this.state.loading ? (
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        <ActivityIndicator size="large" color={Colors.puce} />
+      </View>
+    ) : (
       <View style={styles.container}>
         <LinearGradient
           colors={[Colors.primaryDark, '#2D2A43', Colors.primaryDark]}>
           <FlatList
-            data={MENU}
+            data={this.props.ordersPrepped}
             renderItem={this.renderItem}
             keyExtractor={(item) => `${item.id}`}
             ListHeaderComponent={
               <Text style={styles.screenHeaderText}>pickup counter</Text>
+            }
+            ListEmptyComponent={
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  width: WINDOW_WIDTH,
+                  paddingHorizontal: 15,
+                }}>
+                <Text style={styles.menuItemText}>
+                  There are no orders to pick up at the moment.
+                </Text>
+              </View>
             }
           />
         </LinearGradient>
@@ -55,7 +92,7 @@ class PickupScreen extends Component {
 const MenuItem = ({item, onPress}) => (
   <TouchableOpacity onPress={onPress} style={styles.menuItem}>
     <LinearGradient
-      colors={[Colors.primaryLight, Colors.primaryDark]}
+      colors={[Colors.roseDust, Colors.eggplant]}
       style={styles.menuItemGradient}>
       <Text style={styles.menuItemText}>{item.name}</Text>
     </LinearGradient>
@@ -96,7 +133,7 @@ const styles = StyleSheet.create({
   },
   menuItemText: {
     fontSize: 24,
-    color: Colors.peachPuff,
+    color: Colors.champagnePink,
   },
   screenHeaderText: {
     color: Colors.newYorkPink,

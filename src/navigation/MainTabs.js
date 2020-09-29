@@ -20,7 +20,14 @@ const MainTabs = (props) => {
       }}>
       <Tab.Screen
         name="Order"
-        component={MenuScreen}
+        children={() => (
+          <MenuScreen
+            ordersQueued={ordersQueued}
+            setOrdersQueued={setOrdersQueued}
+            ordersPrepped={ordersPrepped}
+            setOrdersPrepped={setOrdersPrepped}
+          />
+        )}
         options={{
           tabBarLabel: 'order',
           tabBarIcon: ({focused, color, size}) => (
@@ -35,7 +42,14 @@ const MainTabs = (props) => {
       />
       <Tab.Screen
         name="Queue"
-        component={OrdersScreen}
+        children={() => (
+          <OrdersScreen
+            ordersQueued={ordersQueued}
+            setOrdersQueued={setOrdersQueued}
+            ordersPrepped={ordersPrepped}
+            setOrdersPrepped={setOrdersPrepped}
+          />
+        )}
         options={{
           tabBarLabel: 'queue',
           tabBarBadge:
@@ -52,7 +66,14 @@ const MainTabs = (props) => {
       />
       <Tab.Screen
         name="Pickup"
-        component={CounterScreen}
+        children={() => (
+          <CounterScreen
+            ordersQueued={ordersQueued}
+            setOrdersQueued={setOrdersQueued}
+            ordersPrepped={ordersPrepped}
+            setOrdersPrepped={setOrdersPrepped}
+          />
+        )}
         options={{
           tabBarLabel: 'pickup',
           tabBarBadge:
