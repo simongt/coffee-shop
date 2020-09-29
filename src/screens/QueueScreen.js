@@ -2,8 +2,14 @@ import React, {Component} from 'react';
 import {StyleSheet, Platform, Image, Text, View, FlatList} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
-
-import {MENU, WINDOW_HEIGHT, WINDOW_WIDTH} from '../constants';
+import Toast from 'react-native-root-toast';
+import {
+  MENU,
+  WINDOW_HEIGHT,
+  WINDOW_WIDTH,
+  SHORT_TOAST,
+  LONG_TOAST,
+} from '../constants';
 import {Colors} from '../styles/Colors';
 
 class QueueScreen extends Component {
@@ -16,23 +22,29 @@ class QueueScreen extends Component {
   componentDidMount() {}
 
   onMenuItemPress = (item) => {
-    console.log(`Pressed ${item.name}`);
+    try {
+      Toast.show(`Order placed for ${item.name}.`, SHORT_TOAST);
+    } catch (error) {
+      Toast.show(`Could not place order for ${item.name}.`, LONG_TOAST);
+    }
   };
 
+  renderItem = ({item}) => (
+    <MenuItem item={item} onPress={() => this.onMenuItemPress(item)} />
+  );
+
   render() {
-    const renderItem = ({item}) => (
-      <MenuItem item={item} onPress={(item) => this.onMenuItemPress(item)} />
-    );
     return (
       <View style={styles.container}>
         <LinearGradient
           colors={[Colors.primaryDark, '#2D2A43', Colors.primaryDark]}>
-          <Text style={styles.screenHeaderText}>in progress</Text>
-
           <FlatList
             data={MENU}
-            renderItem={renderItem}
+            renderItem={this.renderItem}
             keyExtractor={(item) => `${item.id}`}
+            ListHeaderComponent={
+              <Text style={styles.screenHeaderText}>in progress</Text>
+            }
           />
         </LinearGradient>
       </View>
