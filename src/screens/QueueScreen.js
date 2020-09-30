@@ -7,27 +7,27 @@ import {
   View,
   FlatList,
   ActivityIndicator,
-  Animated,
+  Animated
 } from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-root-toast';
 import * as Progress from 'react-native-progress';
+import { useInterval, OrdersContext } from '../hooks';
 import {
-  MENU,
-  WINDOW_HEIGHT,
-  WINDOW_WIDTH,
-  SHORT_TOAST,
   LONG_TOAST,
+  SHORT_TOAST,
+  WINDOW_WIDTH,
+  WINDOW_HEIGHT
 } from '../constants';
-import {Colors} from '../styles/Colors';
-import {useInterval} from '../utils';
+import { Colors } from '../styles';
 
 type Props = {
-  children?: React.Node,
+  children?: React.Node
 };
 
 const QueueScreen = (props: Props): React$Node => {
+  const Orders = React.useContext(OrdersContext);
   const [loading, setLoading] = React.useState(true);
   const [order, setOrder] = React.useState(null);
   const [progress, setProgress] = React.useState(1);
@@ -35,28 +35,28 @@ const QueueScreen = (props: Props): React$Node => {
 
   React.useEffect(() => {
     if (
-      Array.isArray(props.ordersQueued) &&
-      Array.isArray(props.ordersPrepped)
+      Array.isArray(Orders.ordersQueued) &&
+      Array.isArray(Orders.ordersPrepped)
     ) {
       setLoading(false);
     }
   }, [loading]);
 
   React.useEffect(() => {
-    if (props.ordersQueued.length > 0) {
-      setOrder(props.ordersQueued[0]);
+    if (Orders.ordersQueued.length > 0) {
+      setOrder(Orders.ordersQueued[0]);
     }
   }, [order]);
 
-  onMenuItemPress = (item) => {
+  onMenuItemPress = item => {
     try {
       Toast.show(`Order for ${item.name} is ready.`, SHORT_TOAST);
-      props.setOrdersQueued(
-        props.ordersQueued.filter((order) => order.id !== item.id),
+      Orders.setOrdersQueued(
+        Orders.ordersQueued.filter(order => order.id !== item.id)
       );
-      props.setOrdersPrepped([...props.ordersPrepped, item]);
-      if (props.ordersQueued.length > 0) {
-        setOrder(props.ordersQueued[0]);
+      Orders.setOrdersPrepped([...Orders.ordersPrepped, item]);
+      if (Orders.ordersQueued.length > 0) {
+        setOrder(Orders.ordersQueued[0]);
         setProgress(0);
       }
     } catch (error) {
@@ -70,7 +70,7 @@ const QueueScreen = (props: Props): React$Node => {
     }
   }, 50);
 
-  renderItem = ({item}) => (
+  renderItem = ({ item }) => (
     <MenuItem
       item={item}
       onPress={() => this.onMenuItemPress(item)}
@@ -81,17 +81,18 @@ const QueueScreen = (props: Props): React$Node => {
   );
 
   return loading ? (
-    <View style={{flex: 1, justifyContent: 'center'}}>
-      <ActivityIndicator size="large" color={Colors.puce} />
+    <View style={{ flex: 1, justifyContent: 'center' }}>
+      <ActivityIndicator size='large' color={Colors.puce} />
     </View>
   ) : (
     <View style={styles.container}>
       <LinearGradient
-        colors={[Colors.primaryDark, '#2D2A43', Colors.primaryDark]}>
+        colors={[Colors.primaryDark, '#2D2A43', Colors.primaryDark]}
+      >
         <FlatList
-          data={props.ordersQueued}
+          data={Orders.ordersQueued}
           renderItem={this.renderItem}
-          keyExtractor={(item) => `${item.id}`}
+          keyExtractor={item => `${item.id}`}
           ListHeaderComponent={
             <Text style={styles.screenHeaderText}>in progress</Text>
           }
@@ -101,8 +102,9 @@ const QueueScreen = (props: Props): React$Node => {
                 flex: 1,
                 flexDirection: 'row',
                 width: WINDOW_WIDTH,
-                paddingHorizontal: 15,
-              }}>
+                paddingHorizontal: 15
+              }}
+            >
               <Text style={styles.menuItemText}>
                 There are no orders being prepped at the moment.
               </Text>
@@ -114,7 +116,7 @@ const QueueScreen = (props: Props): React$Node => {
   );
 };
 
-const MenuItem = ({item, onPress, prepping, ready, progress}) => {
+const MenuItem = ({ item, onPress, prepping, ready, progress }) => {
   if (ready) {
     onPress();
   }
@@ -122,9 +124,10 @@ const MenuItem = ({item, onPress, prepping, ready, progress}) => {
     <TouchableOpacity onPress={onPress} style={styles.menuItem}>
       <LinearGradient
         colors={[Colors.secondaryDark, Colors.gunmetal]}
-        style={styles.menuItemGradient}>
+        style={styles.menuItemGradient}
+      >
         <Text style={styles.menuItemText}>{item.name}</Text>
-        <View style={{position: 'absolute', bottom: 0, left: 0}}>
+        <View style={{ position: 'absolute', bottom: 0, left: 0 }}>
           {prepping && (
             <Progress.Bar
               progress={progress}
@@ -148,9 +151,10 @@ const MenuItem = ({item, onPress, prepping, ready, progress}) => {
             position: 'absolute',
             top: 0,
             right: 0,
-            backgroundColor: 'rgba(0,0,0,0.25)',
-          }}>
-          <Text style={[styles.menuItemText, {fontSize: 16}]}>
+            backgroundColor: 'rgba(0,0,0,0.25)'
+          }}
+        >
+          <Text style={[styles.menuItemText, { fontSize: 16 }]}>
             {`${item.duration}s`}
           </Text>
         </View>
@@ -163,7 +167,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   menuItem: {
     flex: 1,
@@ -177,12 +181,12 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 12,
+      height: 12
     },
     shadowOpacity: 0.58,
     shadowRadius: 16.0,
 
-    elevation: 24,
+    elevation: 24
   },
   menuItemGradient: {
     flex: 1,
@@ -190,11 +194,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: WINDOW_HEIGHT * 0.05,
     paddingHorizontal: 25,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   menuItemText: {
     fontSize: 24,
-    color: Colors.peachPuff,
+    color: Colors.peachPuff
   },
   screenHeaderText: {
     color: Colors.newYorkPink,
@@ -203,8 +207,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingLeft: 15,
     paddingTop: 50,
-    paddingBottom: 25,
-  },
+    paddingBottom: 25
+  }
 });
 
 export default QueueScreen;

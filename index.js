@@ -5,12 +5,13 @@ import { name as appName } from './app.json';
 
 LogBox.ignoreLogs([
   `Cannot update a component from inside the function body of a different component.`,
-  `Can't perform a React state update on an unmounted component`
+  `Can't perform a React state update on an unmounted component`,
+  `Remote debugger is in a background tab which may cause apps to perform slowly`
 ]);
 
-// force enable Debug Remotely on debug mode (iOS only)
-// if (__DEV__ && Platform.OS === 'ios') {
-//   NativeModules.DevSettings.setIsDebuggingRemotely(true);
-// }
+if (__DEV__ && Platform.OS === 'ios') {
+  // force enable Debug Remotely on debug mode (iOS only)
+  NativeModules.DevSettings.setIsDebuggingRemotely(true);
+}
 
 AppRegistry.registerComponent(appName, () => App);
