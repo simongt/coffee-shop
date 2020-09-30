@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import * as React from 'react';
 import {
   StyleSheet,
   Platform,
@@ -23,13 +23,17 @@ import {
 import {Colors} from '../styles/Colors';
 import {useInterval} from '../utils';
 
-const QueueScreen = (props) => {
-  const [loading, setLoading] = useState(true);
-  const [order, setOrder] = useState(null);
-  const [progress, setProgress] = useState(1);
-  // const prepTime = useRef(new Animated.Value(0)).current;
+type Props = {
+  children?: React.Node,
+};
 
-  useEffect(() => {
+const QueueScreen = (props: Props): React$Node => {
+  const [loading, setLoading] = React.useState(true);
+  const [order, setOrder] = React.useState(null);
+  const [progress, setProgress] = React.useState(1);
+  // const prepTime = React.useRef(new Animated.Value(0)).current;
+
+  React.useEffect(() => {
     if (
       Array.isArray(props.ordersQueued) &&
       Array.isArray(props.ordersPrepped)
@@ -38,7 +42,7 @@ const QueueScreen = (props) => {
     }
   }, [loading]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (props.ordersQueued.length > 0) {
       setOrder(props.ordersQueued[0]);
     }

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import * as React from 'react';
 import {
   StyleSheet,
   Platform,
@@ -20,10 +20,14 @@ import {
 } from '../constants';
 import {Colors} from '../styles/Colors';
 
-const PickupScreen = (props) => {
-  const [loading, setLoading] = useState(true);
+type Props = {
+  children?: React.Node,
+};
 
-  useEffect(() => {
+const PickupScreen = (props: Props): React$Node => {
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
     if (
       Array.isArray(props.ordersQueued) &&
       Array.isArray(props.ordersPrepped)

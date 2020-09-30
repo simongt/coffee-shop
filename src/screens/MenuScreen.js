@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import * as React from 'react';
 import {StyleSheet, Platform, Image, Text, View, FlatList} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
@@ -13,7 +13,11 @@ import {
 } from '../constants';
 import {Colors} from '../styles/Colors';
 
-const MenuScreen = (props) => {
+type Props = {
+  children?: React.Node,
+};
+
+const MenuScreen = (props: Props): React$Node => {
   onMenuItemPress = async (item) => {
     try {
       Toast.show(`Order placed for ${item.name}.`, SHORT_TOAST);
