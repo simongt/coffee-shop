@@ -1,23 +1,24 @@
 import { Dimensions } from 'react-native';
 import { Colors } from '../styles';
-import { v4 as uuidv4 } from 'uuid';
 
 export const WINDOW_WIDTH = Dimensions.get('window').width;
 export const WINDOW_HEIGHT = Dimensions.get('window').height;
 
+export const ANIMATION_SPEED = 4; // cuz aint nobody got time
+
 export const MENU = [
   {
-    id: uuidv4(),
+    id: 'coffee-001',
     name: `café au lait`,
     duration: 4
   },
   {
-    id: uuidv4(),
+    id: 'coffee-002',
     name: 'cappuccino',
     duration: 10
   },
   {
-    id: uuidv4(),
+    id: 'coffee-003',
     name: 'espresso',
     duration: 15
   }

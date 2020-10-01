@@ -4,11 +4,11 @@ import * as React from 'react';
 export const useInterval = (callback, delay) => {
   const savedCallback = React.useRef();
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     savedCallback.current = callback;
   }, [callback]);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     tick = () => {
       savedCallback.current();
     };
@@ -20,4 +20,4 @@ export const useInterval = (callback, delay) => {
   }, [delay]);
 };
 
-export const OrdersContext = React.createContext(null);
+export const OrdersContext = React.createContext();

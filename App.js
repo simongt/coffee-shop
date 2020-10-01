@@ -8,24 +8,12 @@ import { OrdersContext } from './src/hooks';
 
 const App: () => React$Node = () => {
   const scheme = useColorScheme();
-  const [ordersQueued, setOrdersQueued] = React.useState([]);
-  const [ordersPrepped, setOrdersPrepped] = React.useState([]);
+  const [queue, setQueue] = React.useState([]);
+  const [pickup, setPickup] = React.useState([]);
   return (
     <AppearanceProvider>
-      <StatusBar
-        barStyle={Theme.barStyle}
-        animated={true}
-        translucent={true}
-        hidden={true}
-      />
-      <OrdersContext.Provider
-        value={{
-          ordersQueued,
-          setOrdersQueued,
-          ordersPrepped,
-          setOrdersPrepped
-        }}
-      >
+      <StatusBar barStyle={Theme.barStyle} translucent={true} animated={true} />
+      <OrdersContext.Provider value={{ queue, setQueue, pickup, setPickup }}>
         <NavigationContainer theme={Theme}>
           <StackNavigator />
         </NavigationContainer>

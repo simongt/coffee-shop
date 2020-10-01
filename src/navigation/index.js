@@ -1,11 +1,6 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import MainTabs from './MainTabs';
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme
-} from '@react-navigation/native';
 import { Colors } from '../styles';
 
 type Props = {
@@ -19,7 +14,7 @@ export const StackNavigator = (props: Props): React$Node => {
     <Stack.Navigator>
       <Stack.Screen
         name='Main'
-        component={MainTabs}
+        children={() => <MainTabs {...props} />}
         options={{
           title: 'the coffee shop',
           headerStyle: {

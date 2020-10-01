@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {
   StyleSheet,
-  Platform,
-  Image,
   Text,
   View,
   FlatList,
@@ -11,6 +9,8 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-root-toast';
+import { useFocusEffect } from '@react-navigation/native';
+
 import { OrdersContext } from '../hooks';
 import {
   LONG_TOAST,
@@ -28,28 +28,23 @@ const PickupScreen = (props: Props): React$Node => {
   const Orders = React.useContext(OrdersContext);
   const [loading, setLoading] = React.useState(true);
 
-  React.useEffect(() => {
-    if (
-      Array.isArray(Orders.ordersQueued) &&
-      Array.isArray(Orders.ordersPrepped)
-    ) {
+  useFocusEffect(() => {
+    if (Array.isArray(Orders.pickup)) {
       setLoading(false);
     }
   }, [loading]);
 
-  onMenuItemPress = async item => {
+  pickupOrder = item => {
     try {
+      Orders.setPickup(Orders.pickup.filter(order => order.id !== item.id));
       Toast.show(`Order picked up for ${item.name}.`, SHORT_TOAST);
-      await Orders.setOrdersPrepped(
-        Orders.ordersPrepped.filter(order => order.id !== item.id)
-      );
     } catch (error) {
       Toast.show(`Could not pick up order for ${item.name}.`, LONG_TOAST);
     }
   };
 
   renderItem = ({ item }) => (
-    <MenuItem item={item} onPress={() => this.onMenuItemPress(item)} />
+    <MenuItem item={item} onPress={() => this.pickupOrder(item)} />
   );
 
   return loading ? (
@@ -62,7 +57,7 @@ const PickupScreen = (props: Props): React$Node => {
         colors={[Colors.primaryDark, '#2D2A43', Colors.primaryDark]}
       >
         <FlatList
-          data={Orders.ordersPrepped}
+          data={Orders.pickup}
           renderItem={this.renderItem}
           keyExtractor={item => `${item.id}`}
           ListHeaderComponent={
@@ -124,7 +119,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.58,
     shadowRadius: 16.0,
-
     elevation: 24
   },
   menuItemGradient: {

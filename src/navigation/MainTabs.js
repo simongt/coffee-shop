@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { Menu, Queue, Pickup } from '../screens';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Colors } from '../styles';
 import { OrdersContext } from '../hooks';
-const Tab = createBottomTabNavigator();
 
-const MainTabs = props => {
+const Tab = createMaterialBottomTabNavigator();
+
+const MainTabs = (props: Props): React$Node => {
   const Orders = React.useContext(OrdersContext);
   return (
     <Tab.Navigator
@@ -14,17 +15,18 @@ const MainTabs = props => {
         activeTintColor: Colors.orangeYellow,
         inactiveTintColor: Colors.secondaryLight
       }}
+      barStyle={{ paddingBottom: 10, backgroundColor: 'transparent' }}
     >
       <Tab.Screen
         name='Order'
-        children={() => <Menu />}
+        children={() => <Menu {...props} />}
         options={{
           tabBarLabel: 'order',
           tabBarIcon: ({ focused, color, size }) => (
             <FontAwesome
               name={'coffee'}
               size={26}
-              style={{ marginBottom: -3 }}
+              style={{ marginBottom: -5 }}
               color={focused ? Colors.puce : Colors.secondaryDark}
             />
           )
@@ -32,18 +34,16 @@ const MainTabs = props => {
       />
       <Tab.Screen
         name='Queue'
-        children={() => <Queue />}
+        children={() => <Queue {...props} />}
         options={{
           tabBarLabel: 'queue',
           tabBarBadge:
-            Orders.ordersQueued.length === 0
-              ? null
-              : `${Orders.ordersQueued.length}`,
+            Orders.queue.length === 0 ? null : `${Orders.queue.length}`,
           tabBarIcon: ({ focused, color, size }) => (
             <FontAwesome
               name={'hourglass-half'}
               size={26}
-              style={{ marginBottom: -3 }}
+              style={{ marginBottom: -5 }}
               color={focused ? Colors.puce : Colors.secondaryDark}
             />
           )
@@ -51,18 +51,16 @@ const MainTabs = props => {
       />
       <Tab.Screen
         name='Pickup'
-        children={() => <Pickup />}
+        children={() => <Pickup {...props} />}
         options={{
           tabBarLabel: 'pickup',
           tabBarBadge:
-            Orders.ordersPrepped.length === 0
-              ? null
-              : `${Orders.ordersPrepped.length}`,
+            Orders.pickup.length === 0 ? null : `${Orders.pickup.length}`,
           tabBarIcon: ({ focused, color, size }) => (
             <FontAwesome
               name={'check-square'}
               size={26}
-              style={{ marginBottom: -3 }}
+              style={{ marginBottom: -5 }}
               color={focused ? Colors.puce : Colors.secondaryDark}
             />
           )

@@ -19,6 +19,7 @@ const colorPalette = {
   englishViolet: '#49314b',
   raisinBlack: '#1E1C2D', // primary dark
   gunmetal: '#222A37',
+  blueSapphire: '#31627D',
   darkElectricBlue: '#4C6E81', // secondary dark
   steelTeal: '#638D9A', // secondary
   cadetBlue: '#7AACB3' // secondary light

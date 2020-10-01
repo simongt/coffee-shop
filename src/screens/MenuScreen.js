@@ -2,9 +2,7 @@ import * as React from 'react';
 import {
   Text,
   View,
-  Image,
   FlatList,
-  Platform,
   StyleSheet,
   ActivityIndicator
 } from 'react-native';
@@ -12,6 +10,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import Toast from 'react-native-root-toast';
 import { v4 as uuidv4 } from 'uuid';
+import { useFocusEffect } from '@react-navigation/native';
+
 import { OrdersContext } from '../hooks';
 import {
   MENU,
@@ -30,28 +30,30 @@ const MenuScreen = (props: Props): React$Node => {
   const Orders = React.useContext(OrdersContext);
   const [loading, setLoading] = React.useState(true);
 
-  React.useEffect(() => {
-    if (
-      Array.isArray(Orders.ordersQueued) &&
-      Array.isArray(Orders.ordersPrepped)
-    ) {
+  useFocusEffect(() => {
+    if (Array.isArray(Orders.queue) && Array.isArray(Orders.pickup) && MENU) {
       setLoading(false);
     }
   }, [loading]);
 
-  onMenuItemPress = async item => {
+  onMenuItemPress = item => {
+    console.log('====================================');
+    console.log(`[MenuScreen] Menu item pressed for ${item.name}`);
     try {
-      Toast.show(`Order placed for ${item.name}.`, SHORT_TOAST);
-      await Orders.setOrdersQueued([
-        ...Orders.ordersQueued,
-        {
-          id: uuidv4(),
+      // add order to queue
+      Orders.setQueue(orders => {
+        const order = {
+          id: item.id + '--' + uuidv4(),
           name: item.name,
           duration: item.duration,
-          prepping: false,
-          ready: false
-        }
-      ]);
+          createdAt: Date.now()
+        };
+        const queue = [...orders, order];
+        console.log(`[MenuScreen] Adding ${order.name} to queued orders`);
+        console.table(queue);
+        return queue;
+      });
+      Toast.show(`Order placed for ${item.name}.`, SHORT_TOAST);
     } catch (error) {
       Toast.show(`Could not place order for ${item.name}.`, LONG_TOAST);
     }
@@ -86,7 +88,9 @@ const MenuScreen = (props: Props): React$Node => {
                 paddingHorizontal: 15
               }}
             >
-              <Text style={styles.menuItemText}>N/A</Text>
+              <Text style={styles.menuItemText}>
+                The menu has no orderable items.
+              </Text>
             </View>
           }
         />
@@ -128,7 +132,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.58,
     shadowRadius: 16.0,
-
     elevation: 24
   },
   menuItemGradient: {
