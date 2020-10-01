@@ -1,26 +1,27 @@
-import {Dimensions} from 'react-native';
-import {Colors} from '../styles/Colors';
-import {v4 as uuidv4} from 'uuid';
+import { Dimensions } from 'react-native';
+import { Colors } from '../styles';
 
 export const WINDOW_WIDTH = Dimensions.get('window').width;
 export const WINDOW_HEIGHT = Dimensions.get('window').height;
 
+export const ANIMATION_SPEED = 4; // cuz aint nobody got time
+
 export const MENU = [
   {
-    id: uuidv4(),
+    id: 'coffee-001',
     name: `café au lait`,
-    duration: 4,
+    duration: 4
   },
   {
-    id: uuidv4(),
+    id: 'coffee-002',
     name: 'cappuccino',
-    duration: 10,
+    duration: 10
   },
   {
-    id: uuidv4(),
+    id: 'coffee-003',
     name: 'espresso',
-    duration: 15,
-  },
+    duration: 15
+  }
 ];
 
 export const SHORT_TOAST = {
@@ -32,7 +33,7 @@ export const SHORT_TOAST = {
   animation: true,
   hideOnPress: true,
   delay: 0,
-  opacity: 1,
+  opacity: 1
 };
 
 export const LONG_TOAST = {
@@ -44,5 +45,5 @@ export const LONG_TOAST = {
   animation: true,
   hideOnPress: true,
   delay: 0,
-  opacity: 1,
+  opacity: 1
 };

@@ -1,91 +1,69 @@
 import * as React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import MenuScreen from '../screens/MenuScreen';
-import OrdersScreen from '../screens/QueueScreen';
-import CounterScreen from '../screens/PickupScreen';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { Menu, Queue, Pickup } from '../screens';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {Colors} from '../styles/Colors';
+import { Colors } from '../styles';
+import { OrdersContext } from '../hooks';
 
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
-const MainTabs = (props) => {
-  const [ordersQueued, setOrdersQueued] = React.useState([]);
-  const [ordersPrepped, setOrdersPrepped] = React.useState([]);
-
+const MainTabs = (props: Props): React$Node => {
+  const Orders = React.useContext(OrdersContext);
   return (
     <Tab.Navigator
       tabBarOptions={{
         activeTintColor: Colors.orangeYellow,
-        inactiveTintColor: Colors.secondaryLight,
-      }}>
+        inactiveTintColor: Colors.secondaryLight
+      }}
+      barStyle={{ paddingBottom: 10, backgroundColor: 'transparent' }}
+    >
       <Tab.Screen
-        name="Order"
-        children={() => (
-          <MenuScreen
-            ordersQueued={ordersQueued}
-            setOrdersQueued={setOrdersQueued}
-            ordersPrepped={ordersPrepped}
-            setOrdersPrepped={setOrdersPrepped}
-          />
-        )}
+        name='Order'
+        children={() => <Menu {...props} />}
         options={{
           tabBarLabel: 'order',
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <FontAwesome
               name={'coffee'}
               size={26}
-              style={{marginBottom: -3}}
+              style={{ marginBottom: -5 }}
               color={focused ? Colors.puce : Colors.secondaryDark}
             />
-          ),
+          )
         }}
       />
       <Tab.Screen
-        name="Queue"
-        children={() => (
-          <OrdersScreen
-            ordersQueued={ordersQueued}
-            setOrdersQueued={setOrdersQueued}
-            ordersPrepped={ordersPrepped}
-            setOrdersPrepped={setOrdersPrepped}
-          />
-        )}
+        name='Queue'
+        children={() => <Queue {...props} />}
         options={{
           tabBarLabel: 'queue',
           tabBarBadge:
-            ordersQueued.length === 0 ? null : `${ordersQueued.length}`,
-          tabBarIcon: ({focused, color, size}) => (
+            Orders.queue.length === 0 ? null : `${Orders.queue.length}`,
+          tabBarIcon: ({ focused, color, size }) => (
             <FontAwesome
               name={'hourglass-half'}
               size={26}
-              style={{marginBottom: -3}}
+              style={{ marginBottom: -5 }}
               color={focused ? Colors.puce : Colors.secondaryDark}
             />
-          ),
+          )
         }}
       />
       <Tab.Screen
-        name="Pickup"
-        children={() => (
-          <CounterScreen
-            ordersQueued={ordersQueued}
-            setOrdersQueued={setOrdersQueued}
-            ordersPrepped={ordersPrepped}
-            setOrdersPrepped={setOrdersPrepped}
-          />
-        )}
+        name='Pickup'
+        children={() => <Pickup {...props} />}
         options={{
           tabBarLabel: 'pickup',
           tabBarBadge:
-            ordersPrepped.length === 0 ? null : `${ordersPrepped.length}`,
-          tabBarIcon: ({focused, color, size}) => (
+            Orders.pickup.length === 0 ? null : `${Orders.pickup.length}`,
+          tabBarIcon: ({ focused, color, size }) => (
             <FontAwesome
               name={'check-square'}
               size={26}
-              style={{marginBottom: -3}}
+              style={{ marginBottom: -5 }}
               color={focused ? Colors.puce : Colors.secondaryDark}
             />
-          ),
+          )
         }}
       />
     </Tab.Navigator>
