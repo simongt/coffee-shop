@@ -9,6 +9,16 @@ type Props = {
 
 const Stack = createStackNavigator();
 
+/**
+ * Root stack navigator for the coffee shop application.
+ * 
+ * This component sets up the main navigation structure with a single stack
+ * that contains the MainTabs navigator. The header is styled to match
+ * the coffee shop theme with custom colors and typography.
+ * 
+ * @param {Props} props - Component props (currently unused)
+ * @returns {React$Node} The configured stack navigator
+ */
 export const StackNavigator = (props: Props): React$Node => {
   return (
     <Stack.Navigator>

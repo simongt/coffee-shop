@@ -26,6 +26,22 @@ type Props = {
   children?: React.Node
 };
 
+/**
+ * MenuScreen component that displays the coffee shop menu and handles order placement.
+ * 
+ * This screen shows a list of available menu items and allows customers to place orders.
+ * When an order is placed, it's added to the global queue state and a toast notification
+ * is displayed to confirm the action.
+ * 
+ * Features:
+ * - Displays menu items in a scrollable list
+ * - Handles order placement with unique ID generation
+ * - Shows loading state while initializing
+ * - Provides user feedback via toast notifications
+ * 
+ * @param {Props} props - Component props (currently unused)
+ * @returns {React$Node} The menu screen component
+ */
 const MenuScreen = (props: Props): React$Node => {
   const Orders = React.useContext(OrdersContext);
   const [loading, setLoading] = React.useState(true);
@@ -36,6 +52,17 @@ const MenuScreen = (props: Props): React$Node => {
     }
   }, [loading]);
 
+  /**
+   * Handles menu item selection and order placement.
+   * 
+   * Creates a new order with a unique ID and adds it to the global queue.
+   * The order includes the item details and a timestamp for tracking.
+   * 
+   * @param {Object} item - The menu item being ordered
+   * @param {string} item.id - Menu item ID
+   * @param {string} item.name - Menu item name
+   * @param {number} item.duration - Preparation time in seconds
+   */
   onMenuItemPress = item => {
     console.log('====================================');
     console.log(`[MenuScreen] Menu item pressed for ${item.name}`);
@@ -99,6 +126,14 @@ const MenuScreen = (props: Props): React$Node => {
   );
 };
 
+/**
+ * Individual menu item component that displays a coffee item with styling.
+ * 
+ * @param {Object} props - Component props
+ * @param {Object} props.item - Menu item data
+ * @param {Function} props.onPress - Callback for item selection
+ * @returns {React$Node} The menu item component
+ */
 const MenuItem = ({ item, onPress }) => (
   <TouchableOpacity onPress={onPress} style={styles.menuItem}>
     <LinearGradient

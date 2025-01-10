@@ -7,6 +7,21 @@ import { OrdersContext } from '../hooks';
 
 const Tab = createMaterialBottomTabNavigator();
 
+/**
+ * Main tab navigator that provides the core navigation between the three
+ * primary screens of the coffee shop application.
+ * 
+ * This component uses Material Bottom Tabs and integrates with the OrdersContext
+ * to display real-time badge counts for the queue and pickup tabs.
+ * 
+ * Tab Structure:
+ * - Order: Menu screen for placing new orders
+ * - Queue: Shows orders currently being prepared with progress tracking
+ * - Pickup: Displays completed orders ready for customer pickup
+ * 
+ * @param {Props} props - Component props passed to child screens
+ * @returns {React$Node} The configured tab navigator
+ */
 const MainTabs = (props: Props): React$Node => {
   const Orders = React.useContext(OrdersContext);
   return (
